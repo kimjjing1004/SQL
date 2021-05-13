@@ -359,7 +359,16 @@ SELECT first_name, department_id,
     CASE WHEN department_id <= 30 THEN 'A-GROUP'
         WHEN department_id <= 50 THEN 'B-GROUP'
         WHEN department_id <= 100 THEN 'C-GROUP'
-        ELSE 'REMAINDER' 
+        ELSE 'REMAINDER'
     END as team
 FROM employees
 ORDER BY team;
+
+---------------------------------------------------
+-- 기본 SQL 문제입니다
+---------------------------------------------------
+
+-- 문제 1.
+SELECT first_name || ' ' || last_name, salary, phone_number, hire_date
+FROM employees
+ORDER BY hire_date;
