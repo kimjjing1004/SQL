@@ -266,23 +266,24 @@ SELECT first_name,
     ROUND(MONTHS_BETWEEN(sysdate, hire_date))
 FROM employees;
 
-----------------------------
--- 변환 함수
-----------------------------
 
--- TO_NUMBER(S, frm) : 문자열 -> 수치형
--- TO_DATE (S, frm) : 문자열 -> 날짜형
--- TO_CHAR (O, fmt) : 숫자, 날짜 -> 문자형
+--------------------
+-- 변환 함수
+--------------------
+
+-- TO_NUMBER(s, frm) : 문자열 -> 수치형
+-- TO_DATE(s, frm) : 문자열 -> 날짜형
+-- TO_CHAR(o, fmt) : 숫자, 날짜 -> 문자형
 
 -- TO_CHAR
-SELECT first_name, hire_date, TO_CHAR(hire_date, 'YYYY-MMDD HH24:MI:SS')
+SELECT first_name, hire_date, TO_CHAR(hire_date, 'YYYY-MM-DD HH24:MI:SS') 
 FROM employees;
 
 -- 현재 날짜의 포맷
 SELECT sysdate, TO_CHAR(sysdate, 'YYYY-MM-DD HH24:MI:SS')
 FROM dual;
 
-SELECT TO_CHAR(123456789.0123, '999,999.99')
+SELECT TO_CHAR(123456789.0123, '999,999,999.99')
 FROM dual;
 
 -- 연봉 정보 문자열로 포매팅
@@ -293,33 +294,39 @@ FROM employees;
 SELECT TO_NUMBER('1,999', '999,999'), TO_NUMBER('$1,350.99', '$999,999.99')
 FROM dual;
 
--- TO_DATE : 문자열 -> 날짜
+-- TO_DATE : 문자열 -> 날짜 
 SELECT TO_DATE('2021-05-05 14:30', 'YYYY-MM-DD HH24:MI')
 FROM dual;
 
 -- Date 연산
--- Date +(-) Number : 날짜에 일 수 더한다(뺀다) -> Date
+-- Date +(-) Number : 날짜에 일수 더한다(뺀다) -> Date
 -- Date - Date : 날짜에서 날짜를 뺀 일수
 -- Date + Number / 24 : 날짜에 시간을 더할 때 시간을 24로 나눈 값을 더한다(뺀다)
 
-SELECT TO_CHAR(sysdate, 'YY/MM/DO HH24:MI'),
+SELECT TO_CHAR(sysdate, 'YY/MM/DD HH24:MI'),
     sysdate + 1,    -- 1일 후
     sysdate - 1,    -- 1일 전
     sysdate - TO_DATE('2012-09-24', 'YYYY-MM-DD'),  -- 두 날짜의 차이 일수
     TO_CHAR(sysdate + 13 / 24, 'YY/MM/DD HH24:MI') -- 13시간 후
 FROM dual;
 
-------------------------
+--------------------
 -- NULL 관련 함수
-------------------------
+--------------------
 
--- nvl 함수
-SELECT first_name, salary, commission_pct, salary + (salary * nvl(commission_pct, 0)) -- commission_pct is null -> 0으로 변경
+-- nvl 함수 
+SELECT first_name, 
+    salary, 
+    commission_pct,
+    salary + (salary * nvl(commission_pct, 0)) -- commission_pct is null -> 0으로 변경
 FROM employees;
 
--- nv12 함수
---  nv12(표현식, null이 아닐때의 식, null일 때의 식)
-SELECT first_name, salary, commission_pct, salary + nvl2(commission_pct, salary * commission_pct, 0)
+-- nvl2 함수
+--  nvl2(표현식, null이 아닐때의 식, null일 때의 식)
+SELECT first_name,
+    salary, 
+    commission_pct,
+    salary + nvl2(commission_pct, salary * commission_pct, 0) 
 FROM employees;
 
 -- CASE 함수
@@ -337,10 +344,10 @@ FROM employees;
 -- Decode
 SELECT first_name, job_id, salary, SUBSTR(job_id, 1, 2),
     DECODE(SUBSTR(job_id, 1, 2),
-    'AD', salary * 0.2,
-    'SA', salary * 0.1,
-    'IT', salary * 0.08,
-    salary * 0.05) as bonus
+            'AD', salary * 0.2,
+            'SA', salary * 0.1,
+            'IT', salary * 0.08,
+            salary * 0.05) as bonus
 FROM employees;
 
 -- 연습문제
@@ -352,7 +359,7 @@ SELECT first_name, department_id,
     CASE WHEN department_id <= 30 THEN 'A-GROUP'
         WHEN department_id <= 50 THEN 'B-GROUP'
         WHEN department_id <= 100 THEN 'C-GROUP'
-        ELSE 'REMAINDER'
+        ELSE 'REMAINDER' 
     END as team
 FROM employees
 ORDER BY team;
